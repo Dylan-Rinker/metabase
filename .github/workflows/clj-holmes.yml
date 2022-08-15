@@ -1,0 +1,17 @@
+name: "clj-Holmes"
+
+on: workflow_dispatch
+
+jobs:
+  analyze:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Scan
+      uses: clj-holmes/clj-holmes-action@main
+    #   with:
+    #     rules-repository: 'git://org/private-rules-repo#main'
+    #     output-type: 'sarif'
+    #     output-file: 'scan-results.json'
+    #     fail-on-result: 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
