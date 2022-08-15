@@ -1,0 +1,23 @@
+name: "clj-Holmes"
+
+on: workflow_dispatch
+
+jobs:
+  analyze:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Scan
+      uses: clj-holmes/clj-holmes-action@main
+      with:
+    #     rules-repository: 'git://org/private-rules-repo#main'
+        output-type: 'sarif'
+        output-file: 'scan-results.sarif'
+    #     fail-on-result: 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload analysis results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: ${{github.workspace}}/scan-results.sarif
+        wait-for-processing: true
