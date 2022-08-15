@@ -8,10 +8,16 @@ jobs:
     steps:
     - name: Scan
       uses: clj-holmes/clj-holmes-action@main
-    #   with:
+      with:
     #     rules-repository: 'git://org/private-rules-repo#main'
-    #     output-type: 'sarif'
-    #     output-file: 'scan-results.json'
+        output-type: 'sarif'
+        output-file: 'scan-results.sarif'
     #     fail-on-result: 'true'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload analysis results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: ${{github.workspace}}/scan-results.sarif
+        wait-for-processing: true
